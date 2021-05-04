@@ -125,6 +125,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
         children: [
           Expanded(
             child: Container(
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(35.0),
@@ -164,7 +165,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
           ),
           SizedBox(width: 15),
           Container(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(8.0),
             decoration:
             BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle),
             child: IconButton(
@@ -189,12 +190,19 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
         title: Text('Notificaciones'),
       ),
       body:
+      SingleChildScrollView(
+          child :
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
       Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height -170,
         child:
         Column(
-
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -215,13 +223,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                       itemBuilder: (context, index) {
                         DocumentSnapshot orderData =
                         orderSnapshot.data.docs[index];
-                          orderData.get('type') == '2'  ?? FirebaseFirestore.instance
-                            .collection('user')
-                            .doc(NumEmp)
-                            .collection('notificaciones')
-                            .doc(orderData.id)
-                            .update({'leido': 'si'}).then((value) { print('Realiza Actualizacion');});
-
+                         _CheckNotify();
                         bool isMe = orderData.get('type') == '2' ? true : false;
                         bool delivered =
                         orderData.get('leido') == 'si' ? true : false;
@@ -296,10 +298,12 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                     )
                         : CircularProgressIndicator();
                   }),
-              EnvioMensaje,
             ])
-      )
-      ,
+      ),
+        EnvioMensaje,
+
+        ]
+    ))
     );
   }
 }
