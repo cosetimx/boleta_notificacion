@@ -104,7 +104,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
       "notification": {
         "title": "Atencion",
         "body": mensajeS,
-        "image": "https://firebasestorage.googleapis.com/v0/b/boleta-electronica-d8ab4.appspot.com/o/app_icon.png?alt=media&token=7c997046-a8f6-48fb-9d90-adca9e7a0429",
+       // "image": "https://firebasestorage.googleapis.com/v0/b/boleta-electronica-d8ab4.appspot.com/o/app_icon.png?alt=media&token=7c997046-a8f6-48fb-9d90-adca9e7a0429",
         "sound": "default"
       },
       "to": Token
