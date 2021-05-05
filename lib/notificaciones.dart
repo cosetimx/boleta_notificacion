@@ -8,15 +8,16 @@ import 'package:http/http.dart' as http;
 class NotificacionesPage extends StatelessWidget {
   static String tag = 'notificaciones';
   final NumEmp;
-  final pushToken;
+  final Nombre;
+  final id;
 
-  NotificacionesPage({this.NumEmp, this.pushToken});
+  NotificacionesPage({this.NumEmp, this.id, this.Nombre});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: NotificacionesPageMap(NumEmp : NumEmp, pushToken : pushToken),
+        child: NotificacionesPageMap(NumEmp : NumEmp, id : id, Nombre : Nombre),
       ),
     );
   }
@@ -24,18 +25,20 @@ class NotificacionesPage extends StatelessWidget {
 
 class NotificacionesPageMap extends StatefulWidget {
   final NumEmp;
-  final pushToken;
-  NotificacionesPageMap({this.NumEmp, this.pushToken});
+  final id;
+  final Nombre;
+  NotificacionesPageMap({this.NumEmp, this.id, this.Nombre});
 
-  State<NotificacionesPageMap> createState() => NotificacionesPageState(NumEmp : NumEmp, pushToken : pushToken);
+  State<NotificacionesPageMap> createState() => NotificacionesPageState(NumEmp : NumEmp, id : id, Nombre : Nombre);
 }
 
 class NotificacionesPageState extends State<NotificacionesPageMap> {
   final NumEmp;
-  final pushToken;
-  NotificacionesPageState({this.NumEmp, this.pushToken});
+  final id;
+  final Nombre;
+  NotificacionesPageState({this.NumEmp, this.id, this.Nombre});
   TextEditingController mensaje = TextEditingController();
-
+  String pushToken;
   _sendMessage() async {
     await FirebaseFirestore.instance
         .collection('user')
@@ -49,7 +52,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
           'type' : '1'
         }
     ).then((error) {
-      SendNotify(mensaje.text);
+      _getToken(mensaje.text);
       print('Then Add $error');
     });
     setState(() {
@@ -83,18 +86,28 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
 
     });
   }
-  Future SendNotify(String mensajeS) async {
+
+  _getToken(String mensajeS) {
+    FirebaseFirestore.instance.collection('user').doc(id).get().then((value) {
+        String Token =    value.get('pushToken');
+        SendNotify(mensajeS, Token);
+    });
+
+  }
+
+  Future SendNotify(String mensajeS, String Token) async {
     var client = http.Client();
     print("Token $NumEmp");
-    print("Token $pushToken");
+  //  print("Token $pushToken");
 
     Map message = {
       "notification": {
         "title": "Atencion",
         "body": mensajeS,
+        "image": "https://firebasestorage.googleapis.com/v0/b/boleta-electronica-d8ab4.appspot.com/o/app_icon.png?alt=media&token=7c997046-a8f6-48fb-9d90-adca9e7a0429",
         "sound": "default"
       },
-      "to": pushToken
+      "to": Token
     };
 
     var header = {
@@ -187,7 +200,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
-        title: Text('Notificaciones'),
+        title: Text('Notificaciones $Nombre'),
       ),
       body:
       SingleChildScrollView(

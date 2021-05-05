@@ -165,7 +165,10 @@ class HomePageState extends State<HomePage> {
         users.title = element.get('Nombre');
         users.page =  NotificacionesPage(
             NumEmp: element.get('NumEmp'),
-            pushToken: element.get('pushToken'));
+            Nombre: element.get('Nombre'),
+            id: element.id,
+            );
+
         users.icon = Icons.supervised_user_circle;
         setState(() {
           menuItems.add(users);
