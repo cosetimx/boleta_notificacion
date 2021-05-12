@@ -162,6 +162,7 @@ class HomePageState extends State<HomePage> {
         print('Users ${element.get('NumEmp')}');
 
         MenuItem users = new MenuItem();
+        users.NumEmp = element.get('NumEmp');
         users.title = element.get('Nombre');
         users.page =  NotificacionesPage(
             NumEmp: element.get('NumEmp'),
@@ -200,7 +201,10 @@ class HomePageState extends State<HomePage> {
           },
         )
       ]),
-      body: Text("Pagina Principal"),
+      body: Center(
+        child:
+        Image.asset('assets/logo_notificaciones.png')
+      ),
       //Center(    child: RaisedButton(child: Text("Sign Out"), onPressed: onSignOut)),
       drawer: Drawer(
         child: ListView(
@@ -234,7 +238,7 @@ class HomePageState extends State<HomePage> {
 
 class MenuItem {
   MenuItem();
-
+   String NumEmp;
    String title;
    StatelessWidget page;
    IconData icon;
@@ -247,9 +251,9 @@ class MenuItemWidget extends StatelessWidget {
 
   Widget _buildMenu(MenuItem menuItem, context) {
     return ListTile(
-      leading: Icon(
-        menuItem.icon,
-        color: Colors.teal,
+      leading: new CircleAvatar(
+        backgroundImage: NetworkImage(
+            'https://www.halcontracking.com/php/boleta/images/image_${menuItem.NumEmp}.png'),
       ),
       title: Text(
         menuItem.title,

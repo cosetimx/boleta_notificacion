@@ -70,10 +70,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      FlutterLogo(
+                   /*   FlutterLogo(
                         size: logoanimation.value,
                         curve: Curves.bounceOut,
-                      ),
+                      ),*/
                       Padding(padding: EdgeInsets.only(top: 20.0)),
                       Text(
                         "Centro de Notificaciones",
