@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'auth.dart';
 import 'notificaciones.dart';
-import 'package:side_menu/side_menu.dart';
 
 class HomePage extends StatefulWidget {
 /*  HomePage({this.auth, this.onSignedOut});
@@ -194,48 +193,44 @@ class HomePageState extends State<HomePage> {
 
     return
       Scaffold(
-        appBar: AppBar(title: Text("Página Principal")),
-
-
-      );
-
-
-
-      Scaffold(
       appBar: AppBar(title: Text("Página Principal")),
 
-      body: Center(
+      body:
+
+      Center(
         child:
         Image.asset('assets/logo_notificaciones.png')
       ),
       //Center(    child: RaisedButton(child: Text("Sign Out"), onPressed: onSignOut)),
-      drawer: Drawer(
-
-        child:
-
-        ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(_name),
-              accountEmail: Text(_email),
-              currentAccountPicture: CircleAvatar(
-                child: Text(
-                  _name[0],
-                  style: TextStyle(color: Colors.blueGrey),
+      drawer: Container(
+        width: MediaQuery.of(context).size.width / 5,
+        height: MediaQuery.of(context).size.height,
+        color: Colors.white,
+        child: (
+            ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountName: Text(_name),
+                  accountEmail: Text(_email),
+                  currentAccountPicture: CircleAvatar(
+                    child: Text(
+                      _name[0],
+                      style: TextStyle(color: Colors.blueGrey),
+                    ),
+                    backgroundColor: Colors.blue,
+                  ),
                 ),
-                backgroundColor: Colors.blue,
-              ),
-            ),
-             ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                print('Menu Items ${menuItems.length}');
-                return MenuItemWidget(menuItems[index]);
-              },
-              itemCount: menuItems.length,
-            ),
-          ],
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    print('Menu Items ${menuItems.length}');
+                    return MenuItemWidget(menuItems[index]);
+                  },
+                  itemCount: menuItems.length,
+                ),
+              ],
+            )
         ),
       )
     );

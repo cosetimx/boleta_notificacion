@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "548623493692",
+    "project_id": "boleta-electronica-d8ab4",
+    "storage_bucket": "boleta-electronica-d8ab4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548623493692:android:c72f9e8c1e41e608faf139",
+        "android_client_info": {
+          "package_name": "com.coseti.boleta_notificacion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548623493692-ua2m2psnt0nta1eht0fbppqgek67qaef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn6F0y8oc6e73Pq48uRZscbFmniXNA_6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548623493692-ua2m2psnt0nta1eht0fbppqgek67qaef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548623493692:android:cc0b9dd609829165faf139",
+        "android_client_info": {
+          "package_name": "com.halcontracking.boleta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548623493692-ua2m2psnt0nta1eht0fbppqgek67qaef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn6F0y8oc6e73Pq48uRZscbFmniXNA_6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "548623493692-ua2m2psnt0nta1eht0fbppqgek67qaef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
