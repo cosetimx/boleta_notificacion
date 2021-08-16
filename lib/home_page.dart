@@ -183,57 +183,47 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final grid = GridView.count(
-        childAspectRatio: 1.0,
-        padding: EdgeInsets.only(),
-        crossAxisCount:  5,
-        crossAxisSpacing: 14,
-        mainAxisSpacing: 14,
-        children: []);
+
 
     return
+
       Scaffold(
-      appBar: AppBar(title: Text("Página Principal")),
-
-      body:
-
-      Center(
-        child:
-        Image.asset('assets/logo_notificaciones.png')
-      ),
-      //Center(    child: RaisedButton(child: Text("Sign Out"), onPressed: onSignOut)),
-      drawer: Container(
-        width: MediaQuery.of(context).size.width / 5,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.white,
-        child: (
-            ListView(
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  accountName: Text(_name),
-                  accountEmail: Text(_email),
-                  currentAccountPicture: CircleAvatar(
-                    child: Text(
-                      _name[0],
-                      style: TextStyle(color: Colors.blueGrey),
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    print('Menu Items ${menuItems.length}');
-                    return MenuItemWidget(menuItems[index]);
-                  },
-                  itemCount: menuItems.length,
-                ),
-              ],
-            )
+        appBar: AppBar(
+          title: Text('Pantalla Principal'),
         ),
-      )
-    );
+        body:
+            Container(
+              width:   MediaQuery.of(context).size.width,
+                child :
+        Column(
+
+            children: <Widget>[
+        Expanded(
+        child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+        Flexible(
+            child: ListView(
+            children: <Widget>[
+              ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  print('Menu Items ${menuItems.length}');
+                  return MenuItemWidget(menuItems[index]);
+                },
+                itemCount: menuItems.length,
+              ),
+            ],
+        )),
+
+            ]))]))
+      );
+
+
+
+
   }
 }
 

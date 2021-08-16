@@ -33,12 +33,16 @@ class NotificacionesPageMap extends StatefulWidget {
 }
 
 class NotificacionesPageState extends State<NotificacionesPageMap> {
+  List<MenuItem> menuItems = <MenuItem>[];
+
   final NumEmp;
   final id;
   final Nombre;
   NotificacionesPageState({this.NumEmp, this.id, this.Nombre});
   TextEditingController mensaje = TextEditingController();
   String pushToken;
+  bool charger = false;
+
   _sendMessage() async {
     await FirebaseFirestore.instance
         .collection('user')
@@ -59,12 +63,40 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
     });
   }
 
+  void getUsers() async {
+    FirebaseFirestore.instance.collection('user').get().then((value) {
+      value.docs.forEach((element) {
+        print('Users ${element.get('NumEmp')}');
+
+        MenuItem users = new MenuItem();
+        users.NumEmp = element.get('NumEmp');
+        users.title = element.get('Nombre');
+        users.page =  NotificacionesPage(
+          NumEmp: element.get('NumEmp'),
+          Nombre: element.get('Nombre'),
+          id: element.id,
+        );
+
+        users.icon = Icons.supervised_user_circle;
+        setState(() {
+          menuItems.add(users);
+        });
+      });
+    });
+    setState(() {
+      charger = true;
+    });
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUsers();
     setState(() {});
     _CheckNotify();
+
   }
 
   Future _CheckNotify() {
@@ -189,131 +221,219 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
     // TODO: implement build
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.brown[100],
+      //  backgroundColor: Colors.brown[100],
         appBar: AppBar(
           title: Text('Notificaciones $Nombre'),
         ),
-        body: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 170,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('user')
-                                .doc(NumEmp)
-                                .collection('notificaciones')
-                                .orderBy('created_at', descending: true)
-                                .snapshots(),
-                            builder: (context, orderSnapshot) {
-                              return orderSnapshot.hasData
-                                  ? Flexible(
-                                      child: ListView.builder(
-                                      reverse: true,
+        body:
+        Container(
+            width:   MediaQuery.of(context).size.width,
+            child :
+            Column(
+
+                children: <Widget>[
+                  Expanded(
+                      child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Flexible(
+                                child: ListView(
+                                  children: <Widget>[
+                                   /* UserAccountsDrawerHeader(
+                                      accountName: Text(_name),
+                                      accountEmail: Text(_email),
+                                      currentAccountPicture: CircleAvatar(
+                                        child: Text(
+                                          _name[0],
+                                          style: TextStyle(color: Colors.blueGrey),
+                                        ),
+                                        backgroundColor: Colors.blue,
+                                      ),
+                                    ), */
+                                    ListView.builder(
+                                      scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
-                                      itemCount: orderSnapshot.data.docs.length,
-                                      itemBuilder: (context, index) {
-                                        DocumentSnapshot orderData =
-                                            orderSnapshot.data.docs[index];
-                                        _CheckNotify();
-                                        bool isMe = orderData.get('type') == '2'
-                                            ? true
-                                            : false;
-                                        bool delivered =
-                                            orderData.get('leido') == 'si'
-                                                ? true
-                                                : false;
-
-                                        final bg = isMe
-                                            ? Colors.white
-                                            : Colors.greenAccent.shade100;
-                                        final align = isMe
-                                            ? CrossAxisAlignment.start
-                                            : CrossAxisAlignment.end;
-                                        final icon = delivered
-                                            ? Icons.done_all
-                                            : Icons.done;
-                                        final radius = isMe
-                                            ? BorderRadius.only(
-                                                topRight: Radius.circular(5.0),
-                                                bottomLeft:
-                                                    Radius.circular(10.0),
-                                                bottomRight:
-                                                    Radius.circular(5.0),
-                                              )
-                                            : BorderRadius.only(
-                                                topLeft: Radius.circular(5.0),
-                                                bottomLeft:
-                                                    Radius.circular(5.0),
-                                                bottomRight:
-                                                    Radius.circular(10.0),
-                                              );
-
-                                        return Column(
-                                          crossAxisAlignment: align,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: const EdgeInsets.all(3.0),
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      blurRadius: .5,
-                                                      spreadRadius: 1.0,
-                                                      color: Colors.black
-                                                          .withOpacity(.12))
-                                                ],
-                                                color: bg,
-                                                borderRadius: radius,
-                                              ),
-                                              child: Stack(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        right: 48.0),
-                                                    child: Text(
-                                                        orderData.get('body')),
-                                                  ),
-                                                  Positioned(
-                                                    bottom: 0.0,
-                                                    right: 0.0,
-                                                    child: Row(
-                                                      children: <Widget>[
-                                                        SizedBox(width: 3.0),
-                                                        isMe
-                                                            ? SizedBox(
-                                                                width: 3.0)
-                                                            : Icon(
-                                                                icon,
-                                                                size: 12.0,
-                                                                color: delivered
-                                                                    ? Colors
-                                                                        .blue
-                                                                    : Colors
-                                                                        .black38,
-                                                              )
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        );
+                                      itemBuilder: (BuildContext context, int index) {
+                                        print('Menu Items ${menuItems.length}');
+                                        return MenuItemWidget(menuItems[index]);
                                       },
-                                    ))
-                                  : CircularProgressIndicator();
-                            }),
-                      ])),
-              EnvioMensaje,
-            ])));
+                                      itemCount: menuItems.length,
+                                    ),
+                                  ],
+                                )),
+                            Expanded(
+                              child: Container(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                              width: MediaQuery.of(context).size.width,
+                                              height: MediaQuery.of(context).size.height - 170,
+                                              child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    StreamBuilder(
+                                                        stream: FirebaseFirestore.instance
+                                                            .collection('user')
+                                                            .doc(NumEmp)
+                                                            .collection('notificaciones')
+                                                            .orderBy('created_at', descending: true)
+                                                            .snapshots(),
+                                                        builder: (context, orderSnapshot) {
+                                                          return orderSnapshot.hasData
+                                                              ? Flexible(
+                                                              child: ListView.builder(
+                                                                reverse: true,
+                                                                shrinkWrap: true,
+                                                                itemCount: orderSnapshot.data.docs.length,
+                                                                itemBuilder: (context, index) {
+                                                                  DocumentSnapshot orderData =
+                                                                  orderSnapshot.data.docs[index];
+                                                                  _CheckNotify();
+                                                                  bool isMe = orderData.get('type') == '2'
+                                                                      ? true
+                                                                      : false;
+                                                                  bool delivered =
+                                                                  orderData.get('leido') == 'si'
+                                                                      ? true
+                                                                      : false;
+
+                                                                  final bg = isMe
+                                                                      ? Colors.white
+                                                                      : Colors.greenAccent.shade100;
+                                                                  final align = isMe
+                                                                      ? CrossAxisAlignment.start
+                                                                      : CrossAxisAlignment.end;
+                                                                  final icon = delivered
+                                                                      ? Icons.done_all
+                                                                      : Icons.done;
+                                                                  final radius = isMe
+                                                                      ? BorderRadius.only(
+                                                                    topRight: Radius.circular(5.0),
+                                                                    bottomLeft:
+                                                                    Radius.circular(10.0),
+                                                                    bottomRight:
+                                                                    Radius.circular(5.0),
+                                                                  )
+                                                                      : BorderRadius.only(
+                                                                    topLeft: Radius.circular(5.0),
+                                                                    bottomLeft:
+                                                                    Radius.circular(5.0),
+                                                                    bottomRight:
+                                                                    Radius.circular(10.0),
+                                                                  );
+
+                                                                  return Column(
+                                                                    crossAxisAlignment: align,
+                                                                    children: <Widget>[
+                                                                      Container(
+                                                                        margin: const EdgeInsets.all(3.0),
+                                                                        padding:
+                                                                        const EdgeInsets.all(8.0),
+                                                                        decoration: BoxDecoration(
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                                blurRadius: .5,
+                                                                                spreadRadius: 1.0,
+                                                                                color: Colors.black
+                                                                                    .withOpacity(.12))
+                                                                          ],
+                                                                          color: bg,
+                                                                          borderRadius: radius,
+                                                                        ),
+                                                                        child: Stack(
+                                                                          children: <Widget>[
+                                                                            Padding(
+                                                                              padding: EdgeInsets.only(
+                                                                                  right: 48.0),
+                                                                              child: Text(
+                                                                                  orderData.get('body')),
+                                                                            ),
+                                                                            Positioned(
+                                                                              bottom: 0.0,
+                                                                              right: 0.0,
+                                                                              child: Row(
+                                                                                children: <Widget>[
+                                                                                  SizedBox(width: 3.0),
+                                                                                  isMe
+                                                                                      ? SizedBox(
+                                                                                      width: 3.0)
+                                                                                      : Icon(
+                                                                                    icon,
+                                                                                    size: 12.0,
+                                                                                    color: delivered
+                                                                                        ? Colors
+                                                                                        .blue
+                                                                                        : Colors
+                                                                                        .black38,
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              ))
+                                                              : CircularProgressIndicator();
+                                                        }),
+                                                  ])),
+                                          EnvioMensaje,
+                                        ])),
+                                color: Colors.black26,
+                              ),
+                            ),
+
+                          ]))]))
+
+
+
+
+    );
+  }
+}
+
+class MenuItem {
+  MenuItem();
+  String NumEmp;
+  String title;
+  StatelessWidget page;
+  IconData icon;
+}
+
+class MenuItemWidget extends StatelessWidget {
+  final MenuItem item;
+
+  const MenuItemWidget(this.item);
+
+  Widget _buildMenu(MenuItem menuItem, context) {
+    return ListTile(
+      leading: new CircleAvatar(
+        backgroundImage: NetworkImage(
+            'https://www.halcontracking.com/php/boleta/images/image_${menuItem.NumEmp}.png'),
+      ),
+      title: Text(
+        menuItem.title,
+        style: TextStyle(color: Colors.teal),
+      ),
+      onTap: () {
+        Navigator.of(context).push(
+          new MaterialPageRoute(
+            builder: (BuildContext context) => menuItem.page,
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildMenu(this.item, context);
   }
 }
