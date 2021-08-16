@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'auth.dart';
 import 'notificaciones.dart';
+import 'package:side_menu/side_menu.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({this.auth, this.onSignedOut});
+/*  HomePage({this.auth, this.onSignedOut});
 
   final BaseAuth auth;
-  final VoidCallback onSignedOut;
+  final VoidCallback onSignedOut; */
 
   @override
   HomePageState createState() => HomePageState();
@@ -22,7 +23,7 @@ class HomePageState extends State<HomePage> {
   String _name = "Android", _email = "";
   bool charger = false;
 
-  void onSignOut() async {
+ /* void onSignOut() async {
     try {
       await widget.auth.signOut();
       print("Signed Out");
@@ -30,7 +31,7 @@ class HomePageState extends State<HomePage> {
     } catch (e) {
       print("Error: $e");
     }
-  }
+  } */
 
 
 /*
@@ -142,7 +143,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    widget.auth.currentUser().then((user) {
+   /* widget.auth.currentUser().then((user) {
       setState(() {
         if (user != null) {
           _email = user.email.toString();
@@ -150,7 +151,7 @@ class HomePageState extends State<HomePage> {
           _email = "Loading...";
         }
       });
-    });
+    }); */
     getUsers();
     // validate();
     // configLocalNotification();
@@ -191,23 +192,28 @@ class HomePageState extends State<HomePage> {
         mainAxisSpacing: 14,
         children: []);
 
-    return Scaffold(
-      appBar: AppBar(title: Text("Página Principal"), actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.logout),
-          tooltip: 'Salir',
-          onPressed: () {
-            onSignOut();
-          },
-        )
-      ]),
+    return
+      Scaffold(
+        appBar: AppBar(title: Text("Página Principal")),
+
+
+      );
+
+
+
+      Scaffold(
+      appBar: AppBar(title: Text("Página Principal")),
+
       body: Center(
         child:
         Image.asset('assets/logo_notificaciones.png')
       ),
       //Center(    child: RaisedButton(child: Text("Sign Out"), onPressed: onSignOut)),
       drawer: Drawer(
-        child: ListView(
+
+        child:
+
+        ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text(_name),

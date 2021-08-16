@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 import 'splash_screen.dart';
 import 'auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,7 +36,7 @@ class MyAppState extends State<MyAppMap> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Administrador",
-      home: SplashScreen(auth: widget.auth,),
+      home:  HomePage(),
     );
   }
 }

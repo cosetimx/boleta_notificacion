@@ -62,8 +62,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.SignedIn:
         return HomePage(
-          auth: widget.auth,
-          onSignedOut: _signedOut,
+
         );
         break;
       /*case AuthStatus.NotDetermined:
