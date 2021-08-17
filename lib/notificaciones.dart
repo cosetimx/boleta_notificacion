@@ -230,7 +230,6 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
             width:   MediaQuery.of(context).size.width,
             child :
             Column(
-
                 children: <Widget>[
                   Expanded(
                       child: Row(
@@ -240,17 +239,6 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                             Flexible(
                                 child: ListView(
                                   children: <Widget>[
-                                   /* UserAccountsDrawerHeader(
-                                      accountName: Text(_name),
-                                      accountEmail: Text(_email),
-                                      currentAccountPicture: CircleAvatar(
-                                        child: Text(
-                                          _name[0],
-                                          style: TextStyle(color: Colors.blueGrey),
-                                        ),
-                                        backgroundColor: Colors.blue,
-                                      ),
-                                    ), */
                                     ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
@@ -423,11 +411,16 @@ class MenuItemWidget extends StatelessWidget {
         style: TextStyle(color: Colors.teal),
       ),
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => menuItem.page,),
+          ModalRoute.withName('/notify'),
+        );
+
+   /*     Navigator.of(context).push(
           new MaterialPageRoute(
             builder: (BuildContext context) => menuItem.page,
           ),
-        );
+        ); */
       },
     );
   }
