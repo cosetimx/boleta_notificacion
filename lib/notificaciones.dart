@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ntp/ntp.dart';
+
 
 class NotificacionesPage extends StatelessWidget {
   static String tag = 'notificaciones';
@@ -44,6 +46,9 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
   bool charger = false;
 
   _sendMessage() async {
+
+    DateTime startDate = await NTP.now();
+
     await FirebaseFirestore.instance
         .collection('user')
         .doc(NumEmp)
@@ -51,7 +56,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
         .add({
       'title': 'Notificacion',
       'body': mensaje.text,
-      'created_at': DateTime.now(),
+      'created_at': startDate,
       'leido': 'no',
       'type': '1'
     }).then((error) {
