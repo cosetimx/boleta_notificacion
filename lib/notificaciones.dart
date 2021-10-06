@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ntp/ntp.dart';
+import 'package:intl/intl.dart';
 
 
 class NotificacionesPage extends StatelessWidget {
@@ -47,7 +48,9 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
 
   _sendMessage() async {
 
-    DateTime startDate = await NTP.now();
+   // DateTime startDate = await NTP.now();
+    DateTime now = await DateTime.now();
+
 
     await FirebaseFirestore.instance
         .collection('user')
@@ -56,7 +59,7 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
         .add({
       'title': 'Notificacion',
       'body': mensaje.text,
-      'created_at': startDate,
+      'created_at': now,
       'leido': 'no',
       'type': '1'
     }).then((error) {
@@ -319,7 +322,17 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                                                                     bottomRight:
                                                                     Radius.circular(10.0),
                                                                   );
+                                                                  var fecha = orderData
+                                                                      .get('created_at')
+                                                                      .toDate();
+                                                                  //.toString();
+                                                                  var now = new DateTime.now();
+                                                                  String fec1 = new DateFormat("yyyy-dd-MM HH:mm").format(fecha);
+                                                                  String fec2 = new DateFormat("HH:mm").format(fecha);
+                                                                  String fec3 = new DateFormat("yyyy-dd-MM").format(fecha);
+                                                                  String fec4 = new DateFormat("yyyy-dd-MM").format(now);
 
+                                                                  bool today =  fec3 == fec4 ? true : false;
                                                                   return Column(
                                                                     crossAxisAlignment: align,
                                                                     children: <Widget>[
@@ -341,11 +354,23 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                                                                         child: Stack(
                                                                           children: <Widget>[
                                                                             Padding(
-                                                                              padding: EdgeInsets.only(
-                                                                                  right: 48.0),
-                                                                              child: Text(
-                                                                                  orderData.get('body')),
-                                                                            ),
+                                                                                padding: EdgeInsets.only(
+                                                                                    right: 48.0),
+                                                                                child:
+                                                                                Column(
+                                                                                    crossAxisAlignment: isMe  ?  CrossAxisAlignment.start :  CrossAxisAlignment.end,
+                                                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                                                    children: <Widget>[
+                                                                                      Text(orderData.get('body')),
+                                                                                      Text(!today ? '$fec1' : '$fec2' ,
+                                                                                          style: TextStyle(
+                                                                                              color:
+                                                                                              Colors.blueGrey,
+                                                                                              //fontWeight: FontWeight.bold,
+                                                                                              fontStyle: FontStyle
+                                                                                                  .italic,
+                                                                                              fontSize: 10.0)),
+                                                                                    ])),
                                                                             Positioned(
                                                                               bottom: 0.0,
                                                                               right: 0.0,
