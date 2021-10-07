@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:ntp/ntp.dart';
+//import 'package:ntp/ntp.dart';
 import 'package:intl/intl.dart';
 
 
@@ -47,18 +47,14 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
 
   _sendMessage() async {
 
-   // DateTime startDate = await NTP.now();
-    DateTime now = await DateTime.now();
-
-
-    await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
         .collection('user')
         .doc(NumEmp)
         .collection('notificaciones')
         .add({
       'title': 'Notificacion',
       'body': mensaje.text,
-      'created_at': now,
+      'created_at': FieldValue.serverTimestamp(),
       'leido': 'no',
       'type': '1'
     }).then((error) {
@@ -321,17 +317,30 @@ class NotificacionesPageState extends State<NotificacionesPageMap> {
                                                                     bottomRight:
                                                                     Radius.circular(10.0),
                                                                   );
-                                                                  var fecha = orderData
+
+                                                                  var fecha;
+                                                                  bool today = true;
+                                                                  String fec1 = '';
+                                                                  String fec2 = '';
+                                                                  String fec3 = '';
+                                                                  String fec4 = '';
+
+
+                                                                  try {
+                                                                  fecha = orderData
                                                                       .get('created_at')
                                                                       .toDate();
                                                                   //.toString();
                                                                   var now = new DateTime.now();
-                                                                  String fec1 = new DateFormat("yyyy-dd-MM HH:mm").format(fecha);
-                                                                  String fec2 = new DateFormat("HH:mm").format(fecha);
-                                                                  String fec3 = new DateFormat("yyyy-dd-MM").format(fecha);
-                                                                  String fec4 = new DateFormat("yyyy-dd-MM").format(now);
+                                                                  fec1 = new DateFormat("yyyy-dd-MM HH:mm").format(fecha);
+                                                                  fec2 = new DateFormat("HH:mm").format(fecha);
+                                                                  fec3 = new DateFormat("yyyy-dd-MM").format(fecha);
+                                                                  fec4 = new DateFormat("yyyy-dd-MM").format(now);
 
-                                                                  bool today =  fec3 == fec4 ? true : false;
+                                                                  today =  fec3 == fec4 ? true : false;
+                                                                  } catch(e) {
+
+                                                                  }
                                                                   return Column(
                                                                     crossAxisAlignment: align,
                                                                     children: <Widget>[

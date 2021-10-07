@@ -47,8 +47,8 @@ class MyAppState extends State<MyAppMap> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Administrador",
-        initialRoute: '/',
-        routes: routes,
+    //    initialRoute: '/',
+    //    routes: routes,
       home:  HomePage(),
     );
   }
